@@ -4,6 +4,7 @@ from src.data.data_load import get_imdb
 from src.feature.build_dataloader import build_dataloader, collate_pad
 from src.feature.build_dataset import IMDBDataset
 from src.feature.build_vocabulary import build_feature, build_vocabulary
+from src.model.capsule_model import CapsNet
 from src.model.cnn_model import CNNBaseline
 from src.model.gru_model import GRUBaseline
 from src.model.test_model import test
@@ -28,7 +29,12 @@ if __name__ == '__main__':
 
     gru_model = GRUBaseline(vocab_size=len(word_to_ind), embedding_dim=100, hidden_dim=256, output_dim=2, n_layers=1)
     cnn_model = CNNBaseline(vocab_size=len(word_to_ind), embedding_dim=100, out_channels=256, output_dim=2, kernel_sizes=[3, 4, 5])
+    capsule_model = CapsNet(vocab_size=len(word_to_ind), embedding_dim=100, output_dim=2)
 
-    fit(gru_model, train_loader, valid_loader, 1, 'gru_model')
+    # fit(gru_model, train_loader, valid_loader, 1, 'gru_model')
     # fit(cnn_model, train_loader, valid_loader, 1, 'cnn_model')
-    test(cnn_model, test_loader)
+    fit(capsule_model, train_loader, valid_loader, 1, 'capsule_model')
+
+    # test(gru_model, test_loader)
+    # test(cnn_model, test_loader)
+    test(capsule_model, test_loader)
