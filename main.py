@@ -30,5 +30,5 @@ if __name__ == '__main__':
     cnn_model = CNNBaseline(vocab_size=len(word_to_ind), out_channels=256, output_dim=2, kernel_sizes=[3, 4, 5], emb_dim=100)
 
     # fit(gru_model, train_loader, valid_loader, 2, 'gru_model')
-    # fit(cnn_model, train_loader, valid_loader, 2, 'cnn_model')
+    fit(cnn_model, train_loader, valid_loader, 2, 'cnn_model')
     test(cnn_model, test_loader)
