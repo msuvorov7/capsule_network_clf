@@ -6,6 +6,8 @@ from torch.utils.data import DataLoader
 from tqdm import tqdm
 from sklearn.metrics import accuracy_score
 
+from src.visualization.visualize import plot_loss, plot_acc
+
 
 def train(epoch: int,
           model: nn.Module,
@@ -37,7 +39,7 @@ def train(epoch: int,
 
     model.eval()
     y_true, y_pred = [], []
-    for batch in validating_data_loader:
+    for batch in tqdm(validating_data_loader):
         text = batch['feature'].to(device)
         labels = batch['label'].to(device)
 
@@ -65,7 +67,10 @@ def fit(model: nn.Module, training_data_loader, validating_data_loader, epochs: 
     train_losses = []
     val_losses = []
 
-    for epoch in range(1, epochs):
+    train_accuracy = []
+    val_accuracy = []
+
+    for epoch in range(1, epochs+1):
         train_loss, val_loss, val_acc = train(epoch, model, training_data_loader,
                                               validating_data_loader, criterion, optimizer, device)
         # val_loss, val_acc = test(model, testing_data_loader, criterion, device)
@@ -79,7 +84,9 @@ def fit(model: nn.Module, training_data_loader, validating_data_loader, epochs: 
         train_losses.append(train_loss)
         val_losses.append(val_loss)
 
+        val_accuracy.append(val_acc)
+
     torch.save(model, f'models/{name}.model')
 
-    # plot_acc(train_accuracy, val_accuracy)
-    # plot_loss(train_losses, val_losses)
+    plot_acc(train_accuracy, val_accuracy, name)
+    plot_loss(train_losses, val_losses, name)
