@@ -1,7 +1,7 @@
 from sklearn.model_selection import train_test_split
 
 from src.data.data_load import get_imdb
-from src.feature.build_dataloader import build_dataloader, collate_pad
+from src.feature.build_dataloader import build_dataloader, collate_pad, collate_caps
 from src.feature.build_dataset import IMDBDataset
 from src.feature.build_vocabulary import build_feature, build_vocabulary
 from src.model.capsule_model import CapsNet
@@ -33,8 +33,13 @@ if __name__ == '__main__':
 
     # fit(gru_model, train_loader, valid_loader, 1, 'gru_model')
     # fit(cnn_model, train_loader, valid_loader, 1, 'cnn_model')
-    fit(capsule_model, train_loader, valid_loader, 1, 'capsule_model')
+
+    train_cap_loader = build_dataloader(train_dataset, 64, collate_caps)
+    valid_cap_loader = build_dataloader(valid_dataset, 64, collate_caps)
+    test_cap_loader = build_dataloader(test_dataset, 64, collate_caps)
+
+    fit(capsule_model, train_cap_loader, valid_cap_loader, 1, 'capsule_model')
 
     # test(gru_model, test_loader)
     # test(cnn_model, test_loader)
-    test(capsule_model, test_loader)
+    test(capsule_model, test_cap_loader)
