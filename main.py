@@ -26,8 +26,8 @@ if __name__ == '__main__':
     valid_loader = build_dataloader(valid_dataset, 64, collate_pad)
     test_loader = build_dataloader(test_dataset, 64, collate_pad)
 
-    gru_model = GRUBaseline(embedding_dim=100, hidden_dim=256, vocab_size=len(word_to_ind), output_dim=2, n_layers=1)
-    cnn_model = CNNBaseline(vocab_size=len(word_to_ind), out_channels=256, output_dim=2, kernel_sizes=[3, 4, 5], emb_dim=100)
+    gru_model = GRUBaseline(vocab_size=len(word_to_ind), embedding_dim=100, hidden_dim=256, output_dim=2, n_layers=1)
+    cnn_model = CNNBaseline(vocab_size=len(word_to_ind), embedding_dim=100, out_channels=256, output_dim=2, kernel_sizes=[3, 4, 5])
 
     fit(gru_model, train_loader, valid_loader, 1, 'gru_model')
     # fit(cnn_model, train_loader, valid_loader, 1, 'cnn_model')
