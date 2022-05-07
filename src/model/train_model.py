@@ -28,7 +28,11 @@ def train(epoch: int,
         y_predict = model(text)
 
         loss = criterion(y_predict, label)
-
+        # print(torch.max(F.softmax(y_predict, dim=1), dim=1)[1])
+        # print(label)
+        # print(torch.argmax(F.softmax(y_predict, dim=1), dim=1))
+        # print(torch.max(F.softmax(y_predict, dim=1), dim=1)[1])
+        # return
         optimizer.zero_grad()
         train_loss += loss.item()
         loss.backward()
@@ -60,6 +64,8 @@ def train(epoch: int,
 
 def fit(model: nn.Module, training_data_loader, validating_data_loader, epochs: int, name: str):
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
+
+    model = model.to(device)
 
     optimizer = optim.Adam(model.parameters(), lr=1e-3)
     criterion = nn.CrossEntropyLoss()
