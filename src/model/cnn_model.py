@@ -7,7 +7,7 @@ class CNNBaseline(nn.Module):
     def __init__(
             self,
             vocab_size: int,
-            emb_dim: int,
+            embedding_dim: int,
             out_channels: int,
             kernel_sizes: list,
             output_dim: int,
@@ -15,16 +15,16 @@ class CNNBaseline(nn.Module):
     ):
         super().__init__()
 
-        self.embedding = nn.Embedding(vocab_size, emb_dim)
-        self.conv_0 = nn.Conv1d(in_channels=emb_dim,
+        self.embedding = nn.Embedding(vocab_size, embedding_dim)
+        self.conv_0 = nn.Conv1d(in_channels=embedding_dim,
                                 out_channels=out_channels,
                                 kernel_size=kernel_sizes[0])  # YOUR CODE GOES HERE
 
-        self.conv_1 = nn.Conv1d(in_channels=emb_dim,
+        self.conv_1 = nn.Conv1d(in_channels=embedding_dim,
                                 out_channels=out_channels,
                                 kernel_size=kernel_sizes[1])  # YOUR CODE GOES HERE
 
-        self.conv_2 = nn.Conv1d(in_channels=emb_dim,
+        self.conv_2 = nn.Conv1d(in_channels=embedding_dim,
                                 out_channels=out_channels,
                                 kernel_size=kernel_sizes[2])  # YOUR CODE GOES HERE
 
