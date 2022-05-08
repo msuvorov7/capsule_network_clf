@@ -29,7 +29,7 @@ if __name__ == '__main__':
 
     gru_model = GRUBaseline(vocab_size=len(word_to_ind), embedding_dim=100, hidden_dim=256, output_dim=2, n_layers=1)
     cnn_model = CNNBaseline(vocab_size=len(word_to_ind), embedding_dim=100, out_channels=256, output_dim=2, kernel_sizes=[3, 4, 5])
-    capsule_model = CapsNet(vocab_size=len(word_to_ind), embedding_dim=100, output_dim=2)
+    capsule_model = CapsNet(vocab_size=len(word_to_ind), embedding_dim=100, output_dim=2, device='cpu')
 
     # fit(gru_model, test_loader, valid_loader, 7, 'gru_model')
     # fit(cnn_model, train_loader, valid_loader, 3, 'cnn_model')

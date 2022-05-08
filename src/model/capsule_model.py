@@ -45,16 +45,16 @@ class PrimaryCaps(nn.Module):
 
 
 class DigitCaps(nn.Module):
-    def __init__(self, num_capsules=10, num_routes=32 * 4 * 3, in_channels=338, out_channels=16):
+    def __init__(self, num_capsules=10, num_routes=32 * 4 * 3, in_channels=338, out_channels=16, device='cpu'):
         super(DigitCaps, self).__init__()
-
+        self.use_cuda = False if device == 'cpu' else True
         self.in_channels = in_channels
         self.num_routes = num_routes
         self.num_capsules = num_capsules
 
         self.W = nn.Parameter(torch.randn(1, num_routes, num_capsules, out_channels, in_channels))
 
-    def forward(self, x, use_cuda=False):
+    def forward(self, x):
         batch_size = x.size(0)
         x = torch.stack([x] * self.num_capsules, dim=2).unsqueeze(4)
 
@@ -62,7 +62,7 @@ class DigitCaps(nn.Module):
         u_hat = torch.matmul(W, x)
 
         b_ij = torch.autograd.Variable(torch.zeros(1, self.num_routes, self.num_capsules, 1))
-        if use_cuda:
+        if self.use_cuda:
             b_ij = b_ij.cuda()
 
         num_iterations = 3
@@ -81,12 +81,12 @@ class DigitCaps(nn.Module):
 
 
 class CapsNet(nn.Module):
-    def __init__(self, vocab_size, embedding_dim: int, output_dim: int):
+    def __init__(self, vocab_size, embedding_dim: int, output_dim: int, device):
         super(CapsNet, self).__init__()
         self.embedding = nn.Embedding(vocab_size, embedding_dim)
         self.conv_layer = ConvLayer(embedding_dim)
         self.primary_capsules = PrimaryCaps()
-        self.digit_capsules = DigitCaps()
+        self.digit_capsules = DigitCaps(device=device)
         self.linear = nn.Linear(10 * 16 * 1, output_dim)
 
     def forward(self, x):
