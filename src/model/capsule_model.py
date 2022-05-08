@@ -40,12 +40,12 @@ class PrimaryCaps(nn.Module):
     def forward(self, x):
         u = [capsule(x) for capsule in self.capsules]
         u = torch.stack(u, dim=1)
-        u = u.view(x.size(0), 32 * 6 * 6, -1)
+        u = u.view(x.size(0), 32 * 4 * 3, -1)
         return squash(u)
 
 
 class DigitCaps(nn.Module):
-    def __init__(self, num_capsules=10, num_routes=32 * 6 * 6, in_channels=86, out_channels=16):
+    def __init__(self, num_capsules=10, num_routes=32 * 4 * 3, in_channels=338, out_channels=16):
         super(DigitCaps, self).__init__()
 
         self.in_channels = in_channels

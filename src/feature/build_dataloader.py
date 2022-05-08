@@ -19,7 +19,7 @@ def collate_pad(batch) -> dict:
 
 
 def collate_caps(batch) -> dict:
-    max_len = 784
+    max_len = 1024
 
     feature = torch.empty((len(batch), max_len), dtype=torch.long)
     labels = torch.empty(len(batch), dtype=torch.long)

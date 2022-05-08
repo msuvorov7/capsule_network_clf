@@ -31,15 +31,15 @@ if __name__ == '__main__':
     cnn_model = CNNBaseline(vocab_size=len(word_to_ind), embedding_dim=100, out_channels=256, output_dim=2, kernel_sizes=[3, 4, 5])
     capsule_model = CapsNet(vocab_size=len(word_to_ind), embedding_dim=100, output_dim=2)
 
-    fit(gru_model, test_loader, valid_loader, 5, 'gru_model')
+    # fit(gru_model, test_loader, valid_loader, 7, 'gru_model')
     # fit(cnn_model, train_loader, valid_loader, 3, 'cnn_model')
 
-    # train_cap_loader = build_dataloader(train_dataset, 64, collate_caps)
-    # valid_cap_loader = build_dataloader(valid_dataset, 64, collate_caps)
-    # test_cap_loader = build_dataloader(test_dataset, 64, collate_caps)
+    train_cap_loader = build_dataloader(train_dataset, 40, collate_caps)
+    valid_cap_loader = build_dataloader(valid_dataset, 64, collate_caps)
+    test_cap_loader = build_dataloader(test_dataset, 64, collate_caps)
     #
-    # fit(capsule_model, train_cap_loader, valid_cap_loader, 1, 'capsule_model')
+    fit(capsule_model, train_cap_loader, valid_cap_loader, 1, 'capsule_model')
     #
-    test(gru_model, test_loader)
+    # test(gru_model, test_loader)
     # test(cnn_model, test_loader)
-    # test(capsule_model, test_cap_loader)
+    test(capsule_model, test_cap_loader)
