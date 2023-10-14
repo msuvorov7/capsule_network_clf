@@ -6,6 +6,7 @@ from src.feature.build_dataset import IMDBDataset
 from src.feature.build_vocabulary import build_feature, build_vocabulary
 from src.model.capsule_model import CapsNet
 from src.model.cnn_model import CNNBaseline
+from src.model.rnn_attn import RNNAttention
 from src.model.gru_model import GRUBaseline
 from src.model.test_model import test
 from src.model.train_model import fit
@@ -29,17 +30,26 @@ if __name__ == '__main__':
 
     gru_model = GRUBaseline(vocab_size=len(word_to_ind), embedding_dim=100, hidden_dim=256, output_dim=2, n_layers=1)
     cnn_model = CNNBaseline(vocab_size=len(word_to_ind), embedding_dim=100, out_channels=256, output_dim=2, kernel_sizes=[3, 4, 5])
+    rnn_attn_model = RNNAttention(
+        vocab_size=len(word_to_ind),
+        embedding_dim=100,
+        hidden_dim=128,
+        output_dim=2,
+        dropout=0.2,
+    )
     capsule_model = CapsNet(vocab_size=len(word_to_ind), embedding_dim=100, output_dim=2, device='cpu')
 
     # fit(gru_model, test_loader, valid_loader, 7, 'gru_model')
     # fit(cnn_model, train_loader, valid_loader, 3, 'cnn_model')
+    fit(rnn_attn_model, train_loader, valid_loader, 9, 'rnn_attn_model')
 
     train_cap_loader = build_dataloader(train_dataset, 40, collate_caps)
     valid_cap_loader = build_dataloader(valid_dataset, 64, collate_caps)
     test_cap_loader = build_dataloader(test_dataset, 64, collate_caps)
     #
-    fit(capsule_model, train_cap_loader, valid_cap_loader, 1, 'capsule_model')
+    # fit(capsule_model, train_cap_loader, valid_cap_loader, 1, 'capsule_model')
     #
     # test(gru_model, test_loader)
     # test(cnn_model, test_loader)
-    test(capsule_model, test_cap_loader)
+    test(rnn_attn_model, test_loader)
+    # test(capsule_model, test_cap_loader)
